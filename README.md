@@ -10,7 +10,7 @@ Use this package when you change database schema and you want to restore the old
 
 First backup your current database using this package and after finishing your editing just restore the database.
 
-Some times we need to run migrate:fresh command, and need the exact previous database records.
+Some times we need to run migrate:fresh command, in this case this package will help you to restore the previous database records.
 
 
 ## Installation
