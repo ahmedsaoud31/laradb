@@ -37,7 +37,7 @@ class BackupCommand extends Command
             foreach($tables as $table){
                 $data = DB::table($table)->get()->toJson();
                 Storage::disk('local')->put("db/{$table}.json", $data);
-                $this->info("{$table} table backup successfully");
+                $this->info("<fg=yellow;bg=blue>{$table} table backup successfully");
             }
             return Command::SUCCESS;
         } catch (Throwable $e) {
