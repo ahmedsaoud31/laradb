@@ -46,7 +46,7 @@ class RestoreCommand extends Command
                         DB::select("SET SQL_MODE='ALLOW_INVALID_DATES'");
                         DB::table($table)->insert($filtered);
                     }
-                    $this->info("<fg=yellow;bg=blue>{$table}</> table restored successfully");
+                    $this->info("<fg=yellow;>{$table}</> table restored successfully");
                 }
             }
             Schema::enableForeignKeyConstraints();
