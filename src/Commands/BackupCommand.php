@@ -3,6 +3,7 @@
 namespace Laradb\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 
 use Throwable;
 use DB;
