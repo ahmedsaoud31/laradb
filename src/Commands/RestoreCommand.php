@@ -2,12 +2,12 @@
 
 namespace Laradb\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
-
-use Throwable;
-use Schema;
 use DB;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
+use Schema;
+use Throwable;
 
 class RestoreCommand extends Command
 {
@@ -31,13 +31,21 @@ class RestoreCommand extends Command
     public function handle(): int
     {
         $this->info('Starting database restore...');
+        $ignore_tables = ['migrations', 'cache'];
         try {
             Schema::disableForeignKeyConstraints();
             $tables = DB::select('SHOW TABLES');
             $tables = array_map('current',$tables);
             foreach($tables as $table){
+                if(!in_array($table, $ignore_tables) && count(DB::table($table)->get())){
+                    $this->error("Use restore option only with empty database.");
+                    return self::FAILURE;
+                }
+            }
+            foreach($tables as $table){
+                if(in_array($table, $ignore_tables)) continue;
                 $file = "db/{$table}.json";
-                if(!file_exists($file)) continue;
+                if(!Storage::disk('local')->exists($file)) continue;
                 $columns = Schema::getColumnListing($table);
                 $records = json_decode(Storage::disk('local')->get($file), true);
                 if($records){
