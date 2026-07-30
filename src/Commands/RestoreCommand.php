@@ -52,7 +52,11 @@ class RestoreCommand extends Command
                     foreach ($records as $record) {
                         $filtered = Arr::only($record, $columns);
                         DB::select("SET SQL_MODE='ALLOW_INVALID_DATES'");
-                        DB::table($table)->insert($filtered);
+                        try {
+                            DB::table($table)->insert($filtered);
+                        } catch (Throwable $e) {
+                            $this->error("Duplicate entry");
+                        }
                     }
                     $this->info("<fg=yellow;>{$table}</> table restored successfully");
                 }
