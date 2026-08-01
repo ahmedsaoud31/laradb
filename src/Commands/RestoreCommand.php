@@ -36,12 +36,12 @@ class RestoreCommand extends Command
             Schema::disableForeignKeyConstraints();
             $tables = DB::select('SHOW TABLES');
             $tables = array_map('current',$tables);
-            foreach($tables as $table){
+            /*foreach($tables as $table){
                 if(!in_array($table, $ignore_tables) && count(DB::table($table)->get())){
                     $this->error("Use restore option only with empty database.");
                     return self::FAILURE;
                 }
-            }
+            }*/
             foreach($tables as $table){
                 if(in_array($table, $ignore_tables)) continue;
                 $file = "db/{$table}.json";
