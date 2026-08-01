@@ -31,7 +31,7 @@ class RestoreCommand extends Command
     public function handle(): int
     {
         $this->info('Starting database restore...');
-        $ignore_tables = ['migrations', 'cache'];
+        $ignore_tables = ['migrations', 'cache', 'sessions'];
         try {
             Schema::disableForeignKeyConstraints();
             $tables = DB::select('SHOW TABLES');
